@@ -1,2 +1,2 @@
-# plusminus-authorisation
-Authorisation functionality with basic implementations
+# plusminus-authorization
+Authorization functionality with basic implementations
