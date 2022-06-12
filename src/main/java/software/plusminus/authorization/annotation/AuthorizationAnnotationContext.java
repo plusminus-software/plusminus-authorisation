@@ -38,12 +38,14 @@ public class AuthorizationAnnotationContext {
         
         annotations = handlerMapping.getHandlerMethods().values().stream()
                 .collect(Collectors.toMap(HandlerMethod::getMethod, 
-                        handlerMethod -> AnnotationUtils.findMergedAnnotationsOnMethodAndClass(handlerMethod.getMethod(),
+                        handlerMethod -> AnnotationUtils.findMergedAnnotationsOnMethodAndClass(
+                                handlerMethod.getMethod(),
                                 annotation -> {
                                     if (supportedAnnotations.contains(annotation.annotationType())) {
                                         return true;
                                     }
-                                    if (annotation.annotationType().isAnnotationPresent(AuthorizationAnnotation.class)) {
+                                    if (annotation.annotationType()
+                                            .isAnnotationPresent(AuthorizationAnnotation.class)) {
                                         annotationsWithMissedAuthorizers.add(annotation.annotationType());
                                     }
                                     return false;
@@ -59,11 +61,11 @@ public class AuthorizationAnnotationContext {
     }
 
     public Map<Class<? extends Annotation>, Annotation>  getAnnotations(HandlerMethod handlerMethod) {
-        Map<Class<? extends Annotation>, Annotation> annotations = this.annotations.get(
+        Map<Class<? extends Annotation>, Annotation> methodsAnnotations = this.annotations.get(
                 handlerMethod.getMethod());
-        if (annotations == null) {
+        if (methodsAnnotations == null) {
             throw new IllegalStateException("Unknown method: " + handlerMethod.getMethod());
         }
-        return annotations;
+        return methodsAnnotations;
     }
 }

@@ -17,6 +17,7 @@ public class LocalhostOnlyAuthorizer implements Authorizer<LocalhostOnly> {
         return LocalhostOnly.class;
     }
 
+    @SuppressWarnings("PMD.AvoidUsingHardCodedIP")
     @Override
     public void authorize(HttpServletRequest request, @Nullable Security security,
                           HandlerMethod handlerMethod, LocalhostOnly annotation) {

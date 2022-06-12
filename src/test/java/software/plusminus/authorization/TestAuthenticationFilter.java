@@ -25,6 +25,7 @@ public class TestAuthenticationFilter extends OncePerRequestFilter {
         security = null;
     }
     
+    @SuppressWarnings("checkstyle:HiddenField")
     public void useSecurity(Security security) {
         this.security = security;
     }
