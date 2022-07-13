@@ -30,5 +30,4 @@ public class IpUtils {
 
         return request.getRemoteAddr();
     }
-
 }

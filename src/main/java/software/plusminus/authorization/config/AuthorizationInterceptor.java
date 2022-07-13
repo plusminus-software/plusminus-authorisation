@@ -1,12 +1,9 @@
 package software.plusminus.authorization.config;
 
 import lombok.AllArgsConstructor;
-import org.springframework.lang.Nullable;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 import software.plusminus.authorization.service.AuthorizationService;
-import software.plusminus.security.Security;
-import software.plusminus.security.SecurityRequest;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -21,20 +18,9 @@ public class AuthorizationInterceptor extends HandlerInterceptorAdapter {
                              HttpServletResponse response,
                              Object handler) throws Exception {
 
-        Security security = getSecurity(request);
         HandlerMethod handlerMethod = getHandlerMethod(handler);
-        
-        service.authorize(request, security, handlerMethod);
+        service.authorize(request, handlerMethod);
         return true;
-    }
-    
-    @Nullable
-    private Security getSecurity(HttpServletRequest request) {
-        if (request instanceof SecurityRequest) {
-            return ((SecurityRequest) request).getSecurity();
-        } else {
-            return null;
-        }
     }
     
     private HandlerMethod getHandlerMethod(Object handler) {

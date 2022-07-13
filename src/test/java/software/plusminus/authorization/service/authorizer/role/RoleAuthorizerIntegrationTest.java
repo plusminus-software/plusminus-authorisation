@@ -10,14 +10,15 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import software.plusminus.authorization.TestAuthenticationFilter;
 import software.plusminus.security.Security;
+import software.plusminus.security.SecurityRequest;
 import software.plusminus.test.IntegrationTest;
 
 import java.time.ZonedDateTime;
 import java.util.Collections;
 import java.util.Map;
+import javax.servlet.http.HttpServletRequest;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.same;
 import static org.mockito.Mockito.verify;
 import static software.plusminus.check.Checks.check;
 
@@ -29,6 +30,8 @@ public class RoleAuthorizerIntegrationTest extends IntegrationTest {
     private TestAuthenticationFilter filter;
     @SpyBean
     private RoleAuthorizer roleAuthorizer;
+    @Captor
+    private ArgumentCaptor<HttpServletRequest> requestCaptor;
     @Captor
     private ArgumentCaptor<Role> annotationCaptor;
     
@@ -79,8 +82,11 @@ public class RoleAuthorizerIntegrationTest extends IntegrationTest {
     }
     
     private void verifyAuthorizerIsCalled(Security security) {
-        verify(roleAuthorizer).authorize(any(), same(security), any(), annotationCaptor.capture());
+        verify(roleAuthorizer).authorize(requestCaptor.capture(), any(), annotationCaptor.capture());
         check(annotationCaptor.getValue().value()).is("admin");
+        check(requestCaptor.getValue() instanceof SecurityRequest).isTrue();
+        SecurityRequest securityRequest = (SecurityRequest) requestCaptor.getValue();
+        check(securityRequest.getSecurity()).isSame(security);
     }
     
     private void checkTimestamp(Map<String, String> errors) {
