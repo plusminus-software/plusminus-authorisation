@@ -1,5 +1,6 @@
 package software.plusminus.authorization.service.authorizer.rolesallowed;
 
+import org.springframework.stereotype.Component;
 import org.springframework.web.method.HandlerMethod;
 import software.plusminus.authorization.exception.AuthorizationException;
 import software.plusminus.authorization.service.authorizer.AnnotationAuthorizer;
@@ -9,6 +10,7 @@ import java.util.List;
 import javax.annotation.security.RolesAllowed;
 import javax.servlet.http.HttpServletRequest;
 
+@Component
 public class RolesAllowedAuthorizer implements AnnotationAuthorizer<RolesAllowed> {
     
     @Override
