@@ -3,6 +3,7 @@ package software.plusminus.authorization.config;
 import lombok.AllArgsConstructor;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
+import org.springframework.web.servlet.resource.ResourceHttpRequestHandler;
 import software.plusminus.authorization.service.AuthorizationService;
 
 import javax.servlet.http.HttpServletRequest;
@@ -18,6 +19,9 @@ public class AuthorizationInterceptor extends HandlerInterceptorAdapter {
                              HttpServletResponse response,
                              Object handler) throws Exception {
 
+        if (handler instanceof ResourceHttpRequestHandler) {
+            return true;
+        }
         HandlerMethod handlerMethod = getHandlerMethod(handler);
         service.authorize(request, handlerMethod);
         return true;
